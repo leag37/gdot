@@ -5,10 +5,13 @@ target_dir="$HOME"
 dot_dir="$PWD/dotfiles"
 curr_dir="$PWD"
 
-# Clean old symlinks and directories
+# Clean old symlinks and directories and setup new ones
+mkdir -p $target_dir/.config
+rm $target_dir/.config/starship.toml
 
 # Link dotfiles
 ln -sf "$dot_dir/zsh/.zshrc" "$target_dir/.zshrc"
+ln -sf "$dot_dir/starship/starship.toml" "$target_dir/.config/starship.toml"
 
 # Standard installers
 sudo apt update
@@ -32,8 +35,6 @@ nerd_font_url='https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/
 mkdir -p $HOME/.fonts
 cd $HOME/.fonts
 curl -OL $nerd_font_url
-unzip $nerd_font_name.zip
-rm $nerd_font_name.zip
 fc-cache -fv
 cd $curr_dir
 
