@@ -12,6 +12,7 @@ rm $target_dir/.config/starship.toml
 # Link dotfiles
 ln -sf "$dot_dir/zsh/.zshrc" "$target_dir/.zshrc"
 ln -sf "$dot_dir/starship/starship.toml" "$target_dir/.config/starship.toml"
+ln -sf "$dot_dir/wezterm/.wezterm.lua" "$target_dir/.wezterm.lua"
 
 # Standard installers
 sudo apt update
