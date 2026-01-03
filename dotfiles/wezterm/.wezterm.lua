@@ -61,6 +61,13 @@ table.insert(config.keys,
     action = act.SpawnTab 'CurrentPaneDomain',
 })
 
+table.insert(config.keys,
+{
+  key = 'w',
+  mods = 'LEADER',
+  action = act.SpawnWindow,
+})
+
 -- Tab navigation
 -- n (next) and p (previous)
 table.insert(config.keys,
