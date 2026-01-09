@@ -1,2 +1,2 @@
-require("gael.core.options")
-require("gael.core.keymaps")
+require("gdot.core.options")
+require("gdot.core.keymaps")

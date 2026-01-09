@@ -28,8 +28,8 @@ keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
 
 -- Saving and quitting
-keymap.set("n", "<leader>vq", "<cmd>exit<CR>", { desc = "Exit NeoVim" })
-keymap.set("n", "<leader>vQ", "<cmd>exit!<CR>", { desc = "Exit NeoVim" })
+keymap.set("n", "<leader>vq", "<cmd>qa<CR>", { desc = "Exit NeoVim" })
+keymap.set("n", "<leader>vQ", "<cmd>qa!<CR>", { desc = "Exit NeoVim" })
 keymap.set("n", "<leader>vs", "<cmd>w<CR>", { desc = "Save current file" })
 keymap.set("n", "<leader>va", "<cmd>w!<CR>", { desc = "Save all files" })
 keymap.set("n", "<leader>vx", "<cmd>wq!<CR>", { desc = "Save all files and quit" })

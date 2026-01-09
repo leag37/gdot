@@ -7,12 +7,16 @@ curr_dir="$PWD"
 
 # Clean old symlinks and directories and setup new ones
 mkdir -p $target_dir/.config
+rm $target_dir/.zshrc
+rm $target_dir/.config/nvim
 rm $target_dir/.config/starship.toml
+rm $target_dir/.wezterm.lua
 
 # Link dotfiles
 ln -sf "$dot_dir/zsh/.zshrc" "$target_dir/.zshrc"
 ln -sf "$dot_dir/starship/starship.toml" "$target_dir/.config/starship.toml"
 ln -sf "$dot_dir/wezterm/.wezterm.lua" "$target_dir/.wezterm.lua"
+ln -sf "$dot_dir/nvim" "$target_dir/.config/nvim"
 
 # Standard installers
 sudo apt update
