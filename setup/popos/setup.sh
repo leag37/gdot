@@ -29,7 +29,11 @@ sudo apt install llvm
 sudo apt install nvim
 sudo apt install starship
 sudo apt install wezterm-nightly
+sudo apt install wl-clipboard
 sudo apt install zoxide
+
+# Snap installers
+
 
 # Install nvm without modifying shell config
 PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash'
