@@ -28,7 +28,7 @@ eval "$(zoxide init zsh)"
 alias cd="z"
 
 # fd
-alias fd="fdfind"
+alias fd="fdfind -H"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
