@@ -27,6 +27,7 @@ sudo apt install fd-find
 sudo apt install fzf
 sudo apt install llvm
 sudo apt install nvim
+sudo apt install ripgrep
 sudo apt install starship
 sudo apt install wezterm-nightly
 sudo apt install wl-clipboard
