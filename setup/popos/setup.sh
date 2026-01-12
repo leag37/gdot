@@ -25,6 +25,7 @@ sudo apt install cmake
 sudo apt install eza
 sudo apt install fd-find
 sudo apt install fzf
+sudo apt install lazygit
 sudo apt install llvm
 sudo apt install nvim
 sudo apt install ripgrep
@@ -47,6 +48,14 @@ cd $HOME/.fonts
 curl -OL $nerd_font_url
 fc-cache -fv
 cd $curr_dir
+
+# Install LazyGit
+LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+tar xf lazygit.tar.gz lazygit
+sudo install lazygit -D -t /usr/local/bin/
+rm -rf lazygit
+rm lazygit.tar.gz
 
 # Change shell to zsh
 chsh -s $(which zsh)
