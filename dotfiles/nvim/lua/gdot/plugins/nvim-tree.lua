@@ -8,44 +8,12 @@ return {
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrePlugin = 1
 
-    -- Toggle adaptive width
-    local VIEW_WIDTH_FIXED = 30
-    local view_width_max = -1 -- adaptive to start
-  
-    local function toggle_width_adaptive()
-      if view_width_max == -1 then
-        view_width_max = VIEW_WIDTH_FIXED
-      else
-        view_width_max = -1
-      end
-
-      require("nvim-tree.api").tree.reload()
-    end
-
-    local function get_view_width_max()
-      return view_width_max
-    end
-
-    -- Custom on_attach function
-    local function custom_on_attach(bufnr)
-      local api = require("nvim-tree.api")
-
-      local function opts(desc)
-        return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-      end
-
-      -- Default mappings
-      api.config.mappings.default_on_attach(bufnr)
-
-      vim.keymap.set("n", "A", toggle_width_adaptive, opts("Toggle adaptive width"))
-    end
-    
     -- Setup nvim tree
     nvim_tree.setup({
       view = {
         width = {
           min = 30,
-          max = get_view_width_max,
+          max = -1,
         },
         relativenumber = true,
       },
