@@ -8,9 +8,45 @@ return {
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrePlugin = 1
 
+    -- Toggle adaptive width
+    local VIEW_WIDTH_FIXED = 30
+    local view_width_max = -1 -- adaptive to start
+  
+    local function toggle_width_adaptive()
+      if view_width_max == -1 then
+        view_width_max = VIEW_WIDTH_FIXED
+      else
+        view_width_max = -1
+      end
+
+      require("nvim-tree.api").tree.reload()
+    end
+
+    local function get_view_width_max()
+      return view_width_max
+    end
+
+    -- Custom on_attach function
+    local function custom_on_attach(bufnr)
+      local api = require("nvim-tree.api")
+
+      local function opts(desc)
+        return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+      end
+
+      -- Default mappings
+      api.config.mappings.default_on_attach(bufnr)
+
+      vim.keymap.set("n", "A", toggle_width_adaptive, opts("Toggle adaptive width"))
+    end
+    
+    -- Setup nvim tree
     nvim_tree.setup({
       view = {
-        width = 35,
+        width = {
+          min = 30,
+          max = get_view_width_max,
+        },
         relativenumber = true,
       },
       -- Change folder arrow icons
@@ -42,6 +78,9 @@ return {
       git = {
         ignore = false,
       },
+
+      -- Override on_attach for custom behavior
+      on_attach = custom_on_attach,
     })
 
     -- Keymaps
@@ -52,5 +91,39 @@ return {
     keymap.set("n", "<leader>ef", "<cmd>NvimTreeFindFile<CR>", { desc = "Go to the current file in the file explorer" })
     keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse the file explorer" })
     keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh the file explorer" })
+
+    -- Recipes (sourced initially from nvim-tree github)
+    -- Automatically open file upon creation
+    local api = require("nvim-tree.api")
+    api.events.subscribe(api.events.Event.FileCreated, function(file)
+      vim.cmd("edit " .. vim.fn.fnameescape(file.fname))
+    end)
+
+    -- Find and focus directory (with Telescope)
+    function find_directory_and_focus()
+      local actions = require("telescope.actions")
+      local action_state = require("telescope.actions.state")
+
+      local function open_nvim_tree(prompt_bufnr, _)
+        actions.select_default:replace(function()
+          
+          actions.close(prompt_bufnr)
+          local selection = action_state.get_selected_entry()
+          if (selection ~= nil) then
+            api.tree.open()
+            api.tree.find_file(selection.cwd .. "/" .. selection.value)
+          end
+        end)
+        return true
+      end
+
+      require("telescope.builtin").find_files({
+        find_command = { "fdfind", "--type", "d", "--hidden", "--exclude", ".git/*" },
+        attach_mappings = open_nvim_tree,
+      })
+    end
+
+    keymap.set("n", "<leader>fd", find_directory_and_focus)
+
   end
 }
