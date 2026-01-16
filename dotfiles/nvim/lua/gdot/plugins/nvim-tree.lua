@@ -65,7 +65,6 @@ return {
     local api = require("nvim-tree.api")
     api.events.subscribe(api.events.Event.FileCreated, function(file)
       vim.cmd("edit " .. vim.fn.fnameescape(file.fname))
-      api.tree.close()
     end)
 
     -- Find and focus directory (with Telescope)
