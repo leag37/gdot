@@ -20,16 +20,21 @@ ln -sf "$dot_dir/nvim" "$target_dir/.config/nvim"
 
 # Standard installers
 sudo apt update
+sudo apt install build-essential
 sudo apt install clang
 sudo apt install cmake
 sudo apt install eza
 sudo apt install fd-find
 sudo apt install fzf
 sudo apt install lazygit
+sudo apt install libreadline-dev
 sudo apt install llvm
 sudo apt install nvim
+sudo apt install python3.12-venv
+sudo apt install rebar3
 sudo apt install ripgrep
 sudo apt install starship
+sudo apt install unzip
 sudo apt install wezterm-nightly
 sudo apt install wl-clipboard
 sudo apt install zoxide
@@ -52,10 +57,46 @@ cd $curr_dir
 # Install LazyGit
 LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
 curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-tar xf lazygit.tar.gz lazygit
+tar -xf lazygit.tar.gz lazygit
 sudo install lazygit -D -t /usr/local/bin/
 rm -rf lazygit
 rm lazygit.tar.gz
+
+# DotNet
+sudo apt install -y dotnet-sdk-10.0
+sudo apt install -y aspnetcore-runtime-10.0
+
+# Go language
+sudo rm -rf /usr/local/go
+curl -Lo go.1.25.6.linux-amd64.tar.gz "https://go.dev/dl/go1.25.6.linux-amd64.tar.gz"
+sudo tar -C /usr/local -xzf go.1.25.6.linux-amd64.tar.gz
+rm go.1.25.6.linux-amd64.tar.gz
+echo "export PATH=\$PATH:/usr/local/go/bin" >> ~/.profile
+
+# Haskell
+curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+
+# Lua
+luav=lua-5.5.0
+curl -Lo $luav.tar.gz "https://www.lua.org/ftp/$luav.tar.gz"
+tar xf $luav.tar.gz
+cd $luav
+make all test
+sudo make install
+cd ..
+rm $luav.tar.gz
+rm -rf $luav
+
+lua_rocks=luarocks-3.13.0
+curl -Lo $lua_rocks.tar.gz "https://luarocks.github.io/luarocks/releases/$lua_rocks.tar.gz"
+tar xf $lua_rocks.tar.gz
+cd $lua_rocks
+./configure --with-lua-include=/usr/local/include
+make
+sudo make install
+cd ..
+rm $lua_rocks.tar.gz
+rm -rf $lua_rocks
 
 # Change shell to zsh
 chsh -s $(which zsh)
