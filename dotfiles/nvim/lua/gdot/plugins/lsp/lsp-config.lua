@@ -71,7 +71,6 @@ return {
 
     -- Setup all the LSPs
     vim.lsp.config("clangd", {})
-
    
     vim.lsp.config("lua_ls", {
       capabilities = capabilities,
