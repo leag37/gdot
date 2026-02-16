@@ -5,13 +5,14 @@ local act = wezterm.action
 local mux = wezterm.mux
 
 -- Font
-config.font = wezterm.font("JetBrainsMono Nerd Font", {weight = 'Regular'})
+config.font = wezterm.font("JetBrains Mono", {weight = 'Regular'})
 config.font_size = 14
 
 -- Window decorations and general settings
 config.window_background_opacity = 0.9
 config.color_scheme = "Catppuccin Macchiato"
 config.audible_bell = "Disabled"
+config.window_decorations = "RESIZE"
 wezterm.on("gui-startup", function(cmd)
     local tab, pane, window = mux.spawn_window(cmd or {})
     window:gui_window():maximize()
