@@ -127,5 +127,8 @@ return {
     }
     InstallSupplementalPackages(formatters)
 
+    -- Keymaps
+    local keymap = vim.keymap
+    keymap.set('n', '<leader>lm', "<cmd>Mason<CR>", { desc = "Open Mason LSP manager"})
   end,
 }
