@@ -69,7 +69,7 @@ return {
     keymap.set({ "x", "o" }, "ic", function()
       select.select_textobject("@class.inner", "textobjects")
     end)
-    keymap.set({ "x", "o" }, "a", function()
+    keymap.set({ "x", "o" }, "as", function()
       select.select_textobject("@local.scope", "textobjects")
     end)
 
