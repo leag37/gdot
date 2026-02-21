@@ -15,6 +15,7 @@ vim.opt.rtp:prepend(lazy_path)
 require("lazy").setup(
   {
     { import = "gdot.plugins" },
+    { import = "gdot.plugins.debug" },
     { import = "gdot.plugins.lsp" },
     { import = "gdot.plugins.ui" },
   },
