@@ -6,6 +6,8 @@ return {
   },
   config = function()
     local nvim_tree = require("nvim-tree")
+    local api = require("nvim-tree.api")
+    local keymap = vim.keymap
 
     -- recommended settings from nvim-tree documentation
     vim.g.loaded_netrw = 1
@@ -51,11 +53,33 @@ return {
       },
 
       -- Override on_attach for custom behavior
-      on_attach = custom_on_attach,
+      on_attach = function(bufnr)
+        -- Important: When you supply in `on_attach` function, nvim-tree won't
+        -- automatically set up the default keymaps. To set up the default keymaps,
+        -- call the `default_on_attach` function. See `:help nvim-tree-quickstart-custom-mappings`.
+        api.config.mappings.default_on_attach(bufnr)
+
+        local function opts(desc)
+          return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+
+        local preview = require("nvim-tree-preview")
+
+        keymap.set("n", "P", preview.watch, opts("Preview (Watch)"))
+        keymap.set("n", "<Esc>", preview.unwatch, opts("Close Preview/Unwatch)"))
+        keymap.set("n", "<C-f>", function()
+          return preview.scroll(4)
+        end, opts("Scroll Down"))
+        keymap.set("n", "<C-b>", function()
+          return preview.scroll(-4)
+        end, opts("Scroll Up"))
+
+        -- Simple tab behavior: Always preview
+        keymap.set("n", "<Tab>", preview.node_under_cursor, opts("Preview"))
+      end,
     })
 
     -- Keymaps
-    local keymap = vim.keymap
     keymap.set("n", "<leader>ee", "<cmd>NvimTreeOpen<CR>", { desc = "Open the file explorer" })
     keymap.set("n", "<leader>eq", "<cmd>NvimTreeClose<CR>", { desc = "Close the file explorer" })
     keymap.set("n", "<leader>et", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle the file explorer" })
@@ -65,7 +89,6 @@ return {
 
     -- Recipes (sourced initially from nvim-tree github)
     -- Automatically open file upon creation
-    local api = require("nvim-tree.api")
     api.events.subscribe(api.events.Event.FileCreated, function(file)
       vim.cmd("edit " .. vim.fn.fnameescape(file.fname))
     end)
