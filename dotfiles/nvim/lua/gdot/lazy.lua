@@ -16,6 +16,7 @@ require("lazy").setup(
   {
     { import = "gdot.plugins" },
     { import = "gdot.plugins.lsp" },
+    { import = "gdot.plugins.ui" },
   },
   {
     checker = {
