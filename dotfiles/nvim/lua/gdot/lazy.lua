@@ -15,10 +15,10 @@ vim.opt.rtp:prepend(lazy_path)
 require("lazy").setup(
   {
     { import = "gdot.plugins" },
-    { import = "gdot.plugins.ui" },
-    { import = "gdot.plugins.editing" },
     { import = "gdot.plugins.debug" },
+    { import = "gdot.plugins.editing" },
     { import = "gdot.plugins.lsp" },
+    { import = "gdot.plugins.ui" },
   },
   {
     checker = {
