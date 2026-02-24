@@ -3,9 +3,11 @@ return {
   dependencies = {
     "nvim-tree/nvim-web-devicons",
     "stevearc/overseer.nvim",
+    "Civitasv/cmake-tools.nvim",
   },
   config = function()
     local lualine = require("lualine")
+    local cmake = require("cmake-tools")
 
     local colors = {
       blue = "#65D1FF",
@@ -55,17 +57,12 @@ return {
     local lazy_status = require("lazy.status")
 
     -- Configure lualine with modified theme
-    lualine.setup({
+    local config = {
       options = {
         theme = my_lualine_theme,
       },
       sections = {
-        lualine_c = {
-          {
-            "filename",
-            path = 1,
-          },
-        },
+        lualine_c = {},
         lualine_x = {
           {
             lazy_status.updates,
@@ -84,6 +81,24 @@ return {
           { "filetype" },
         },
       },
-    })
+    }
+
+    -- Insert a component in lualine_c at left section
+    local function ins_left(component)
+      table.insert(config.sections.lualine_c, component)
+    end
+
+    -- Insert a component in lualine_x at right section
+    local function ins_right(component)
+      table.insert(config.sections.lualine_x, component)
+    end
+
+    ins_left {
+      "filename",
+      path = 1,
+    }
+
+    -- Apply config
+    lualine.setup(config)
   end,
 }

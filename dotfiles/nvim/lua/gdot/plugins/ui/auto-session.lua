@@ -1,11 +1,34 @@
 return {
   "rmagatti/auto-session",
+  dependencies = {
+    "stevearc/overseer.nvim",
+  },
   config = function()
     local auto_session = require("auto-session")
 
     auto_session.setup({
       auto_restore_enabled = false,
       auto_session_suppress_dirs = { "~/", "~/Dev", "~/Downloads", "~/Desktop" },
+
+      -- overseer integration
+      pre_save_cmds = {
+        function()
+          local tasks = require("overseer.task_list").list_tasks()
+          local cmds = {}
+          for _, task in ipairs(tasks) do
+            local json = vim.json.encode(task:serialize())
+
+            -- For some reason, vim.json.encode encodes / as \/.
+            json = string.gsub(json, "\\/", "/")
+
+            -- Escape single quotes so we can put this inside single quotes
+            json = string.gsub(json, "'", "\\'")
+
+            table.insert(cmds, string.format("lua require('overseer').new_task(vim.json.decode('%s')):start()", json))
+          end
+          return cmds
+        end,
+      },
     })
 
     local keymap = vim.keymap
