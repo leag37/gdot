@@ -7,6 +7,9 @@ return {
     local overseer = require("overseer")
     overseer.setup({
       dap = false, -- disable dap to support lazy loading
+      task_list = {
+        direction = "bottom",
+      },
     })
 
     local keymap = vim.keymap

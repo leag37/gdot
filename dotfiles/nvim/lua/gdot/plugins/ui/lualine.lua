@@ -8,6 +8,7 @@ return {
   config = function()
     local lualine = require("lualine")
     local cmake = require("cmake-tools")
+    local icons = require("gdot.core.icons")
 
     local colors = {
       blue = "#65D1FF",
@@ -62,24 +63,20 @@ return {
         theme = my_lualine_theme,
       },
       sections = {
+        -- lualine_a =  {},
+        lualine_b = {},
         lualine_c = {},
-        lualine_x = {
-          {
-            lazy_status.updates,
-            cond = lazy_status.has_updates,
-            color = { fg = "#FF9E64" },
-          },
-          {
-            "overseer",
-          },
-          {
-            "datetime",
-            style = "%H:%M:%S",
-          },
-          { "encoding" },
-          { "fileformat" },
-          { "filetype" },
-        },
+        lualine_x = {},
+        lualine_y = {},
+        -- lualine_z = {},
+      },
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { "filename" },
+        lualine_x = { "location" },
+        lualine_y = {},
+        lualine_z = {},
       },
     }
 
@@ -93,10 +90,166 @@ return {
       table.insert(config.sections.lualine_x, component)
     end
 
+    -- ins_left { "mode" }
+    ins_left { "branch" }
+    ins_left {
+      function()
+        local c_preset = cmake.get_configure_preset()
+        return "CMake: [" .. (c_preset and c_preset or "X") .. "]"
+      end,
+      icon = icons.ui.Search,
+      cond = function()
+        return cmake.is_cmake_project() and cmake.has_cmake_preset()
+      end,
+      on_click = function(n, mouse)
+        if (n == 1) then
+          if (mouse == "l") then
+            vim.cmd("CMakeSelectConfigurePreset")
+          end
+        end
+      end
+    }
+    -- ins_left {
+    --   function()
+    --     local build_type = cmake.get_build_type()
+    --     return "CMake: [" .. (build_type and build_type or "") .. "]"
+    --   end,
+    --   icon = icons.ui.Search,
+    --   cond = function()
+    --     return cmake.is_cmake_project() and cmake.has_cmake_preset()
+    --   end,
+    --   on_click = function(n, mouse)
+    --     if (n == 1) then
+    --       if (mouse == "l") then
+    --         vim.cmd("CMakeSelectBuildType")
+    --       end
+    --     end
+    --   end
+    -- }
+    -- ins_left {
+    --   function()
+    --     local kit = cmake.get_kit()
+    --     return "CMake: [" .. (kit and kit or "X") .. "]"
+    --   end,
+    --   icon = icons.ui.Pencil,
+    --   cond = function()
+    --     return cmake.is_cmake_project() and cmake.has_cmake_preset()
+    --   end,
+    --   on_click = function(n, mouse)
+    --     if (n == 1) then
+    --       if (mouse == "l") then
+    --         vim.cmd("CMakeSelectKit")
+    --       end
+    --     end
+    --   end
+    -- }
+    ins_left {
+      function()
+        return "Build"
+      end,
+      icon = icons.ui.Gear,
+      cond = cmake.is_cmake_project,
+      on_click = function(n, mouse)
+        if (n == 1) then
+          if (mouse == "l") then
+            vim.cmd("CMakeBuild")
+          end
+        end
+      end
+    }
+    -- ins_left {
+    --   function()
+    --     local b_preset = cmake.get_build_preset()
+    --     return "CMake: [" .. (b_preset and b_preset or "X") .. "]"
+    --   end,
+    --   icon = icons.ui.Search,
+    --   cond = function()
+    --     return cmake.is_cmake_project() and cmake.has_cmake_preset()
+    --   end,
+    --   on_click = function(n, mouse)
+    --     if (n == 1) then
+    --       if (mouse == "l") then
+    --         vim.cmd("CMakeSelectBuildPreset")
+    --       end
+    --     end
+    --   end
+    -- }
+    -- ins_left {
+    --   function()
+    --     local b_target = cmake.get_build_target()
+    --     return "CMake: [" .. (b_target and b_target or "X") .. "]"
+    --   end,
+    --   icon = icons.ui.Search,
+    --   cond = cmake.is_cmake_project,
+    --   on_click = function(n, mouse)
+    --     if (n == 1) then
+    --       if (mouse == "l") then
+    --         vim.cmd("CMakeSelectBuildTarget")
+    --       end
+    --     end
+    --   end
+    -- }
+    ins_left {
+      function()
+        return icons.ui.Run
+      end,
+      cond = cmake.is_cmake_project,
+      on_click = function(n, mouse)
+        if (n == 1) then
+          if (mouse == "l") then
+            vim.cmd("CMakeRun")
+          end
+        end
+      end
+    }
+    ins_left {
+      function()
+        local l_target = cmake.get_launch_target()
+        return "[" .. (l_target and l_target or "X") .. "]"
+      end,
+      cond = cmake.is_cmake_project,
+      on_click = function(n, mouse)
+        if (n == 1) then
+          if (mouse == "l") then
+            vim.cmd("CMakeSelectLaunchTarget")
+          end
+        end
+      end
+    }
+    ins_left {
+      function()
+        return icons.ui.Debug
+      end,
+      cond = cmake.is_cmake_project,
+      on_click = function(n, mouse)
+        if (n == 1) then
+          if (mouse == "l") then
+            vim.cmd("CMakeDebug")
+          end
+        end
+      end
+    }
     ins_left {
       "filename",
       path = 1,
     }
+
+    ins_right {
+      lazy_status.updates,
+      cond = lazy_status.has_updates,
+      color = { fg = "#FF9E64" },
+    }
+
+    ins_right { "overseer" }
+    ins_right {
+      "datetime",
+      style = "%H:%M:%S",
+    }
+    ins_right { "encoding" }
+    ins_right { "fileformat" }
+    ins_right { "filetype" }
+    -- ins_right { "location" }
+    ins_right { "progress" }
 
     -- Apply config
     lualine.setup(config)
