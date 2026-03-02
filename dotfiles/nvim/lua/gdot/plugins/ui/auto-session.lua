@@ -2,12 +2,14 @@ return {
   "rmagatti/auto-session",
   dependencies = {
     "stevearc/overseer.nvim",
+    "Weissle/persistent-breakpoints.nvim",
   },
   config = function()
     local auto_session = require("auto-session")
 
     auto_session.setup({
-      auto_restore_enabled = false,
+      -- auto_restore_enabled = false,
+      auto_restore_last_session = true,
       auto_session_suppress_dirs = { "~/", "~/Dev", "~/Downloads", "~/Desktop" },
 
       -- overseer integration
@@ -28,6 +30,12 @@ return {
           end
           return cmds
         end,
+        function()
+          local persistent_breakpoints = require("persistent-breakpoints.api")
+          persistent_breakpoints.store_breakpoints()
+        end,
+      },
+      post_restore_cmds = {
       },
     })
 
