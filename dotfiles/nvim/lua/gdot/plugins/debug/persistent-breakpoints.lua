@@ -3,7 +3,7 @@ return {
   config = function()
     local persistent_breakpoints = require("persistent-breakpoints")
     persistent_breakpoints.setup {
-      load_breakpoints_event = { "BufReadPost" }
+      -- load_breakpoints_event = { "BufReadPost" }
     }
   end,
 }

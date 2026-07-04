@@ -34,16 +34,14 @@ return {
     end, { desc = "Start a debugging session" })
     if cmake.is_cmake_project then
       keymap.set("n", "<C-F5>", "<cmd>CMakeRun<CR>", { desc = "Start a debugging session" })
-      -- keymap.set("n", "<F5>", "<cmd>CMakeDebug<CR>", { desc = "Start the application" })
+      keymap.set("n", "<F4>", "<cmd>CMakeBuild<CR>", { desc = "Build the project" })
+      keymap.set("n", "<S-F4>", "<cmd>CMakeClean<CR><cmd>CMakeBuild<CR>", { desc = "Rebuild the project" })
+      keymap.set("n", "<F6>", "<cmd>CMakeClean<CR>", { desc = "Clean the project" })
     else
     end
 
     -- Keymap conditional on attaching debugger
     local opts = { silent = true }
-    -- opts.cond = function()
-    --   return dap.session() ~= nil
-    -- end
-
     opts.desc = "Stop the debugger"
     keymap.set("n", "<S-F5>", "<cmd>DapTerminate<CR>", opts)
 
